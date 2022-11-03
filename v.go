@@ -5,13 +5,13 @@ const (
 	CMVzh Zh = "测振"
 
 	CV101   C1 = "01" //
-	CV101zh Zh = "小型低功耗（MDVS）"
+	CV101zh Zh = "小型低功耗(MDVS)"
 
 	CV102   C1 = "02" //
-	CV102zh Zh = "机架式1U（RDVS）"
+	CV102zh Zh = "机架式1U(RDVS)"
 
 	CV103   C1 = "04" //
-	CV103zh Zh = "机架式4U（RDVS）"
+	CV103zh Zh = "机架式4U(RDVS)"
 
 	CV201   C2 = "01" //
 	CV201zh Zh = "单通道"
@@ -38,10 +38,10 @@ const (
 	CV401zh Zh = "通用款"
 
 	CV402   C4 = "02" //
-	CV402zh Zh = "短矩离（单级放大）"
+	CV402zh Zh = "短矩离(单级放大)"
 
 	CV403   C4 = "03" //
-	CV403zh Zh = "加长距离（内置三级放大）"
+	CV403zh Zh = "加长距离(内置三级放大)"
 )
 
 func init() {
