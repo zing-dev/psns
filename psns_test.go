@@ -15,6 +15,6 @@ func TestParse(t *testing.T) {
 		if err != nil {
 			log.Fatal(err)
 		}
-		log.Println(serialNumber, serialNumber.ZhString())
+		log.Println(serialNumber, serialNumber.ZhString(), serialNumber.CM.K.IsV())
 	}
 }

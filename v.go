@@ -55,3 +55,7 @@ func init() {
 
 	RegisterC4(CMV, C4Map{K: CV401, V: CV401zh}, C4Map{K: CV402, V: CV402zh}, C4Map{K: CV403, V: CV403zh})
 }
+
+func (c CM) IsV() bool {
+	return c == CMV
+}

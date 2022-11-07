@@ -46,14 +46,15 @@ func (z Zh) String() string {
 	return string(z)
 }
 
+// ProductSerialNumber 产品序列号组成
 type ProductSerialNumber struct {
-	CM   CMMap
-	C1   C1Map
-	C2   C2Map
-	C3   C3Map
-	C4   C4Map
-	Date Date
-	Code Code
+	CM   CMMap // 产品大类
+	C1   C1Map // 一级分类
+	C2   C2Map // 二级分类
+	C3   C3Map // 三级分类
+	C4   C4Map // 四级分类
+	Date Date  // 日期
+	Code Code  // 当天编号
 }
 
 var (

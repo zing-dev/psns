@@ -49,3 +49,7 @@ func init() {
 
 	RegisterC4(CMT, C4Map{K: CT401, V: CT401zh}, C4Map{K: CT402, V: CT402zh}, C4Map{K: CT403, V: CT403zh})
 }
+
+func (c CM) IsT() bool {
+	return c == CMT
+}

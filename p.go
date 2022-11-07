@@ -46,3 +46,7 @@ func init() {
 
 	RegisterC4(CMP, C4Map{K: CP401, V: CP401zh}, C4Map{K: CP402, V: CP402zh}, C4Map{K: CP403, V: CP403zh})
 }
+
+func (c CM) IsP() bool {
+	return c == CMP
+}
