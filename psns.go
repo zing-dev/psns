@@ -40,6 +40,11 @@ func (d Date) String() string {
 
 type Code string // 设备编码
 
+func (c Code) ToInt() int {
+	code, _ := strconv.Atoi(string(c))
+	return code
+}
+
 type Zh string
 
 func (z Zh) String() string {
@@ -67,16 +72,16 @@ var (
 	ErrSerialNumberLength = errors.New("序列号的长度必须为21个ASCII字符")
 	ErrCM                 = func(cm CM) error { return fmt.Errorf("当前的序列号的产品大类<%s>未注册", cm) }
 	ErrC1                 = func(cm CM, c1 C1) error {
-		return fmt.Errorf("当前的序列号的产品<%s>1类形态<%s>未注册", cm.ZhString(), c1)
+		return fmt.Errorf("当前的序列号的产品<%s>1类形态<%s>编码未注册", cm.ZhString(), c1)
 	}
 	ErrC2 = func(cm CM, c2 C2) error {
-		return fmt.Errorf("当前的序列号的产品<%s>2类配置<%s>未注册", cm.ZhString(), c2)
+		return fmt.Errorf("当前的序列号的产品<%s>2类配置<%s>编码未注册", cm.ZhString(), c2)
 	}
 	ErrC3 = func(cm CM, c3 C3) error {
-		return fmt.Errorf("当前的序列号的产品<%s>3类详细配置<%s>未注册", cm.ZhString(), c3)
+		return fmt.Errorf("当前的序列号的产品<%s>3类详细配置<%s>编码未注册", cm.ZhString(), c3)
 	}
 	ErrC4 = func(cm CM, c4 C4) error {
-		return fmt.Errorf("当前的序列号的产品<%s>4类特殊码<%s>未注册", cm.ZhString(), c4)
+		return fmt.Errorf("当前的序列号的产品<%s>4类特殊码<%s>编码未注册", cm.ZhString(), c4)
 	}
 	ErrDate = func(cm CM, date Date) error {
 		return fmt.Errorf("当前的序列号的产品<%s>日期<%s>非法", cm.ZhString(), date)
@@ -222,4 +227,85 @@ func Parse(serialNumber string) (*ProductSerialNumber, error) {
 		Date: date,
 		Code: code,
 	}, nil
+}
+
+func Generate(cm CM, c1 C1, c2 C2, c3 C3, c4 C4, code int) (*ProductSerialNumber, error) {
+	productSerialNumber := new(ProductSerialNumber)
+	for _, value := range cms {
+		if strings.HasPrefix(cm.String(), value.K.String()) {
+			productSerialNumber.CM = value
+		}
+	}
+	if productSerialNumber.CM.K == "" {
+		return nil, ErrCM(cm)
+	}
+
+	if v, ok := c1s[cm]; ok {
+		for _, value := range v {
+			if strings.HasPrefix(c1.String(), value.K.String()) {
+				productSerialNumber.C1 = value
+			}
+		}
+
+		if productSerialNumber.C1.K == "" {
+			return nil, ErrC1(cm, c1)
+		}
+
+	} else {
+		return nil, ErrCM(cm)
+	}
+
+	if v, ok := c2s[cm]; ok {
+		for _, value := range v {
+			if strings.HasPrefix(c2.String(), value.K.String()) {
+				productSerialNumber.C2 = value
+			}
+		}
+
+		if productSerialNumber.C2.K == "" {
+			return nil, ErrC2(cm, c2)
+		}
+
+	} else {
+		return nil, ErrCM(cm)
+	}
+
+	if v, ok := c3s[cm]; ok {
+		for _, value := range v {
+			if strings.HasPrefix(c3.String(), value.K.String()) {
+				productSerialNumber.C3 = value
+			}
+		}
+
+		if productSerialNumber.C3.K == "" {
+			return nil, ErrC3(cm, c3)
+		}
+
+	} else {
+		return nil, ErrCM(cm)
+	}
+
+	if v, ok := c4s[cm]; ok {
+		for _, value := range v {
+			if strings.HasPrefix(c4.String(), value.K.String()) {
+				productSerialNumber.C4 = value
+			}
+		}
+
+		if productSerialNumber.C4.K == "" {
+			return nil, ErrC4(cm, c4)
+		}
+
+	} else {
+		return nil, ErrCM(cm)
+	}
+
+	productSerialNumber.Date = Date(time.Now().Format("20060102"))
+
+	c := Code(fmt.Sprintf("%04d", code))
+	if code > 9999 {
+		return nil, ErrCode(cm, c)
+	}
+	productSerialNumber.Code = c
+	return productSerialNumber, nil
 }

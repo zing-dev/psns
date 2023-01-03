@@ -1,6 +1,7 @@
 package psns
 
 import (
+	"fmt"
 	"log"
 	"testing"
 )
@@ -17,4 +18,13 @@ func TestParse(t *testing.T) {
 		}
 		log.Println(serialNumber, serialNumber.ZhString(), serialNumber.CM.K.IsV())
 	}
+}
+
+func TestGenerate(t *testing.T) {
+	generate, err := Generate(CMP, CP101, "02", "01", "01", 9999)
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println(generate.String())
+	fmt.Println(generate.ZhString())
 }
